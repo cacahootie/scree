@@ -43,7 +43,7 @@ describe('json upload and validation', function(){
                 "tronald": "dump",
                 "cilary": "hlinton"
             })
-            .expect(d => d === "crap")
-            .expect(200, done)
+            .expect(d => d.length === 5)
+            .expect(400, done)
     })
 })
