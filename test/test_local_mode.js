@@ -17,7 +17,7 @@ describe('json upload and validation', function(){
         if (process.env.NODE_ENV) {
             done()
         } else {
-            assert(app.env.NODE_ENV === 'testing')
+            assert(app.locals.env.NODE_ENV === 'testing')
             done()
         }
     })
@@ -43,7 +43,7 @@ describe('json upload and validation', function(){
                 "tronald": "dump",
                 "cilary": "hlinton"
             })
-            .expect(d => d.length === 5)
+            .expect(d => d.body.errors.length === 5)
             .expect(400, done)
     })
 })
