@@ -27,7 +27,7 @@ describe('file backend', function(){
         assert(schema.properties.country)
     })
 
-    it('saves and deletes an item', function (done) {
+    it('saves, gets and deletes an item', function (done) {
         let item = {
             "city":"Phoenix",
             "state":"Arizona",
@@ -35,17 +35,19 @@ describe('file backend', function(){
             "county":"Maricopa",
             "country":"USA"
         }
-        backend.saveItem('city', 'testitem', item, err => {
-            assert(!err, "error saving item")
-            jsonfile.readFile(
-                'static/pub/items/city/testitem.json',
-                (err, obj) => {
-                    if (err) console.error(err)
-                    assert(!err)
-                    assert.deepEqual(item, obj)
-                    backend.deleteItem('city', 'testitem', done)
-                }
-            )
+        backend.saveItem('city', 'testitem', item, e => {
+            assert(!e)
+            backend.getItem('city', 'testitem', (e, d) => {
+                assert(!e)
+                assert.deepEqual(item, d)
+                backend.deleteItem('city', 'testitem', e => {
+                    assert(!e)
+                    backend.getItem('city', 'testitem', (e,d) => {
+                        assert(e)
+                        done()
+                    })
+                })
+            })
         })
     })
 
