@@ -48,4 +48,20 @@ describe('file backend', function(){
             )
         })
     })
+
+    it('lists the items', function (done) {
+        let item = {
+            "city":"Phoenix",
+            "state":"Arizona",
+            "zip":85001,
+            "county":"Maricopa",
+            "country":"USA"
+        }
+        backend.saveItem('city', 'testitem', item, err => {
+            backend.listItems('city', (err, items) => {
+                assert.deepEqual(items, ['testitem'])
+                backend.deleteItem('city', 'testitem', done)
+            })
+        })
+    })
 })
