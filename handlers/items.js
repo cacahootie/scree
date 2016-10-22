@@ -1,12 +1,18 @@
 
 const mustache = require('mustache')
 
-exports.itemHandler = function itemHandler (req, res) {
+exports.createItem = function createItem (req, res) {
     const app = req.app
-          schema = app.locals.backend.schemata[req.params.schema],
-          pkey = mustache.render(schema.primaryKey, req.body)
+          schema = app.locals.backend.schemata[req.params.schema]
 
-    app.locals.backend.saveItem(req.params.schema, pkey, req.body, err => {
+    let itemName = null
+    if (req.params.itemName) {
+        itemName = req.params.itemName
+    } else {
+        itemName = mustache.render(schema.primaryKey, req.body)
+    }
+
+    app.locals.backend.saveItem(req.params.schema, itemName, req.body, err => {
         if (err) {
             console.error(err)
             return res.status(500).send("Item Not Saved")
@@ -14,4 +20,8 @@ exports.itemHandler = function itemHandler (req, res) {
         return res.end("good")
     })
     return
+}
+
+exports.getSchema = function getSchema (req, res) {
+    res.json(req.app.locals.backend.getSchema(req.params.schema))
 }

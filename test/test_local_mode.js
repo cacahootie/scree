@@ -59,4 +59,19 @@ describe('json upload and validation', function(){
             .expect(d => d.body.errors.length === 5)
             .expect(400, done)
     })
+
+    it('gets a schema', function(done) {
+        request(app)
+            .get('/city')
+            .expect(200)
+            .end((e,d) => {
+                assert(d.body.$schema)
+                assert(d.body.properties.city)
+                assert(d.body.properties.state)
+                assert(d.body.properties.zip)
+                assert(d.body.properties.county)
+                assert(d.body.properties.country)
+                done()
+            })
+    })
 })
