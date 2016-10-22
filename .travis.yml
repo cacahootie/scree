@@ -8,3 +8,7 @@ install:
   - npm install
 script:
   - npm test
+  - npm coverage
+addons:
+    code_climate:
+        repo_token: a75a6e90a939f3737e0f4c1d3dbbaf39e6a82cfa5144016fc46726e8c602ba84
