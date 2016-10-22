@@ -1,7 +1,8 @@
 'use strict'
 
 const assert = require('chai').assert,
-      request = require('supertest')
+      request = require('supertest'),
+      jsonfile = require('jsonfile')
 
 const app_factory = require('../lib/app_factory')
 
@@ -23,18 +24,18 @@ describe('json upload and validation', function(){
     })
 
     it('validates a simple example', function(done) {
+        let item = {
+            "city": "Phoenix",
+            "state": "Arizona",
+            "zip": 85004,
+            "county": "Maricopa",
+            "country": "USA"
+        }
         request(app)
             .post('/city')
-            .send({
-                "city": "Phoenix",
-                "state": "Arizona",
-                "zip": 85004,
-                "county": "Maricopa",
-                "country": "USA"
-            })
-            .expect(d => d === "good")
+            .send(item)
             .expect(200)
-            .expect(d => {
+            .end((e, d) => {
                 jsonfile.readFile(
                     'static/pub/items/city/PhoenixArizona.json',
                     (err, obj) => {
@@ -45,6 +46,7 @@ describe('json upload and validation', function(){
                     }
                 )
             })
+            
     })
 
     it('fails a simple example', function(done) {
