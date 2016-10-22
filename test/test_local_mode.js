@@ -33,7 +33,18 @@ describe('json upload and validation', function(){
                 "country": "USA"
             })
             .expect(d => d === "good")
-            .expect(200, done)
+            .expect(200)
+            .expect(d => {
+                jsonfile.readFile(
+                    'static/pub/items/city/PhoenixArizona.json',
+                    (err, obj) => {
+                        if (err) console.error(err)
+                        assert(!err)
+                        assert.deepEqual(item, obj)
+                        app.locals.backend.deleteItem('city', 'PhoenixArizona', done)
+                    }
+                )
+            })
     })
 
     it('fails a simple example', function(done) {
