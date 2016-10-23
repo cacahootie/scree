@@ -73,4 +73,14 @@ describe('json upload and validation', function(){
                 done()
             })
     })
+
+    it('logs in', function(done) {
+        request(app)
+            .get('/login?user=bob')
+            .expect(200)
+            .end((e,d) => {
+                assert.equal(d.text, 'bob')
+                done()
+            })
+    })
 })
