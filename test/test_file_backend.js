@@ -66,4 +66,22 @@ describe('file backend', function(){
             })
         })
     })
+
+    it('returns filtered items', function(done) {
+        let item = {
+            "winners": [
+                "george hw bush",
+                "bill clinton",
+                "george w bush",
+                "barack obama",
+                "hilary clinton"
+            ]
+        }
+        backend.filterItems('filter_test', item, (e,d) => {
+            assert(d[0].winners[0] === 'george hw bush')
+            assert(d[0].losers[0] === 'michael dukakis')
+            assert(d.length === 1)
+            done()
+        })
+    })
 })
