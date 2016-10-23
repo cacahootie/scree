@@ -36,15 +36,14 @@ describe('json upload and validation', function(){
             .send(item)
             .expect(200)
             .end((e, d) => {
-                jsonfile.readFile(
-                    'static/pub/items/city/PhoenixArizona.json',
-                    (err, obj) => {
-                        if (err) console.error(err)
-                        assert(!err)
-                        assert.deepEqual(item, obj)
+                request(app)
+                    .get('/city/PhoenixArizona')
+                    .expect(200)
+                    .end((e,d) => {
+                        assert(!e)
+                        assert.deepEqual(item, d.body)
                         app.locals.backend.deleteItem('city', 'PhoenixArizona', done)
-                    }
-                )
+                    })
             })
             
     })

@@ -26,3 +26,14 @@ exports.createItem = function createItem (req, res) {
 exports.getSchema = function getSchema (req, res) {
     res.json(req.app.locals.backend.getSchema(req.params.schema))
 }
+
+exports.getItem = function getItem (req, res) {
+    req.app.locals.backend.getItem(
+        req.params.schema,
+        req.params.itemName,
+        (e, d) => {
+            if (e) return res.status(404).end("error, no data")
+            res.json(d)
+        }
+    )
+}
