@@ -3,7 +3,7 @@
 const mustache = require('mustache')
 
 exports.createItem = function createItem (req, res) {
-    const app = req.app
+    const app = req.app,
           schema = app.locals.backend.schemata[req.params.schema]
 
     let itemName = null
